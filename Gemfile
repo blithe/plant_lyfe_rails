@@ -40,3 +40,10 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
 end
 
+group :test do
+    gem "capybara"
+    gem "launchy"
+    gem "rspec-rails", "~> 3.0"
+    gem "turnip"
+end
+
