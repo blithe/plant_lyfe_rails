@@ -1,0 +1,59 @@
+#!/bin/sh
+
+brew_ensure() {
+  package=$1
+
+  brew info $package | grep "Not installed" > /dev/null 2>&1
+  if [[ "$?" -eq "0" ]]; then
+    brew install $package
+  fi
+}
+
+setup_database() {
+  success=0
+
+  bin/rake db:drop:all
+  let success=success+$?
+
+  bin/rake db:setup
+  let success=$?+success
+
+  RAILS_ENV=test bin/rake db:schema:load
+  let success=$?+success
+
+  if [[ "$success" -ne "0" ]]; then
+    echo "Could not setup database. Manual steps required."
+    printf "\e[36m"
+    echo ""
+    echo "---------------------------------"
+    echo "Some manual setup steps required:"
+    echo ""
+    echo "1) Edit config/database.yml if a username or password is required"
+    echo "   for your database installation."
+    echo "2) Initialize databases with:"
+    echo "     bin/rake db:drop:all"
+    echo "     bin/rake db:setup"
+    echo "     RAILS_ENV=test bin/rake db:schema:load"
+    printf "\e[0m"
+  fi
+}
+
+if ! which brew > /dev/null 2>&1; then
+  # Install http://brew.sh
+  echo "**** Installing Homebrew..."
+  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+  echo "**** DONE!"
+fi
+
+echo "**** Install brew packages..."
+# e.g. brew_ensure postgresql
+echo "**** DONE!"
+
+echo "**** Install gems..."
+gem install bundler
+bundle install
+# Other gems not in Gemfile
+# e.g. gem install foreman
+echo "**** DONE!"
+
+setup_database
