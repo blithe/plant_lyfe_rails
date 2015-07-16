@@ -23,7 +23,7 @@ default: &default
 
 development:
   <<: *default
-  database: plant_lyfe_rails_development
+  database: plant_lyfe_rails_dev
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -80,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: plant_lyfe_rails_production
+  database: plant_lyfe_rails_prod
   username: plant_lyfe_rails
   password: <%= ENV['PLANT_LYFE_RAILS_DATABASE_PASSWORD'] %>
