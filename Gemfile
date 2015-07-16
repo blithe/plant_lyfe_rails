@@ -27,5 +27,6 @@ group :test do
     gem "launchy"
     gem "rspec-rails", "~> 3.0"
     gem "turnip"
+    gem 'factory_girl_rails'
 end
 
