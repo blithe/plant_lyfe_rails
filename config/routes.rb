@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
 	resources :dicots, :defaults => { :format => 'json' } do
-        resource :leaf, only: [:create, :show, :update, :destroy]
+        resources :leaf, only: [:create, :show, :update, :destroy], controller: 'leafs'
     end
 
   get 'dicots/leaf/search' => 'leafs#index'
