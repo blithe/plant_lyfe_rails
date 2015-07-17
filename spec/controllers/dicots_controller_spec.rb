@@ -18,8 +18,12 @@ describe DicotsController do
 
         it "returns a list of all dicots" do
             plants = JSON.parse(response.body)["plants"]
+
             expect(plants.first["common_name"]).to eq(dicot1.common_name)
+            expect(plants.first["species"]).to eq(dicot1.species)
+
             expect(plants.last["common_name"]).to eq(dicot2.common_name)
+            expect(plants.last["species"]).to eq(dicot2.species)
         end
     end
 end

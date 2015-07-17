@@ -1,6 +1,6 @@
 class DicotsController < ApplicationController
     def index
-        @plants = Dicot.all
-        render json: {"plants": @plants}
+        @dicots = Dicot.all
+        render json: @dicots, root: "plants"
     end
 end
