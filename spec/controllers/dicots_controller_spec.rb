@@ -4,6 +4,8 @@ describe DicotsController do
     describe "#index" do
         let!(:dicot1) { FactoryGirl.create(:dicot) }
         let!(:dicot2) { FactoryGirl.create(:dicot) }
+        let!(:leaf1) { FactoryGirl.create(:leaf, dicot: dicot1) }
+        let!(:leaf2) { FactoryGirl.create(:leaf, dicot: dicot2) }
         before do
             get :index
         end
@@ -21,14 +23,18 @@ describe DicotsController do
 
             expect(plants.first["common_name"]).to eq(dicot1.common_name)
             expect(plants.first["species"]).to eq(dicot1.species)
+            expect(plants.first["leaves"].first).to eq(dicot_leaf_path(dicot1, leaf1))
 
             expect(plants.last["common_name"]).to eq(dicot2.common_name)
             expect(plants.last["species"]).to eq(dicot2.species)
+            expect(plants.last["leaves"].first).to eq(dicot_leaf_path(dicot2, leaf2))
         end
     end
 
     describe "#show" do
         let!(:dicot) { FactoryGirl.create(:dicot) }
+        let!(:leaf1) { FactoryGirl.create(:leaf, dicot: dicot) }
+        let!(:leaf2) { FactoryGirl.create(:leaf, dicot: dicot) }
         before do
             get :show, id: dicot.common_name.downcase.strip.gsub(' ', '-')
         end
@@ -47,6 +53,8 @@ describe DicotsController do
             expect(plant["family"]).to eq(dicot.family)
             expect(plant["genus"]).to eq(dicot.genus)
             expect(plant["species"]).to eq(dicot.species)
+            expect(plant["leaves"].first).to eq(dicot_leaf_path(dicot, leaf1))
+            expect(plant["leaves"].last).to eq(dicot_leaf_path(dicot, leaf2))
         end
     end
 
