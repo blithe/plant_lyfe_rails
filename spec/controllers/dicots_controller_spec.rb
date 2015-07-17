@@ -72,4 +72,21 @@ describe DicotsController do
         end
     end
 
+
+    describe "#destroy" do
+        let!(:dicot) { FactoryGirl.create(:dicot) }
+        before do
+            delete :destroy, id: dicot.common_name.downcase.strip.gsub(' ', '-')
+        end
+
+        it 'is successful' do
+            expect(response.status).to eq(204)
+        end
+
+        it 'deletes the dicot' do
+            expect {
+              Dicot.find(dicot.id)
+            }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+    end
 end

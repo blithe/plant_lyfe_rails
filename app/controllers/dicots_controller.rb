@@ -18,6 +18,12 @@ class DicotsController < ApplicationController
         end
     end
 
+    def destroy
+        @dicot = Dicot.friendly.find(params[:id])
+        @dicot.destroy
+        head :no_content
+    end
+
     private
 
     def dicot_params
