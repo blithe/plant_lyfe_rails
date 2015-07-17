@@ -49,4 +49,27 @@ describe DicotsController do
             expect(plant["species"]).to eq(dicot.species)
         end
     end
+
+    describe "#create" do
+        let(:dicot_attributes) { AttributesFor(:dicot) }
+        before do
+            put :create, dicot_attributes
+        end
+
+        it 'is successful' do
+            expect(response).to have_http_status(:created)
+        end
+
+        it "returns a representation of the dicot" do
+            plant = JSON.parse(response.body)
+
+            expect(plant["common_name"]).to eq(dicot_attributes["common_name"])
+            expect(plant["subclass"]).to eq(dicot_attributes["subclass"])
+            expect(plant["order"]).to eq(dicot_attributes["order"])
+            expect(plant["family"]).to eq(dicot_attributes["family"])
+            expect(plant["genus"]).to eq(dicot_attributes["genus"])
+            expect(plant["species"]).to eq(dicot_attributes["species"])
+        end
+    end
+
 end

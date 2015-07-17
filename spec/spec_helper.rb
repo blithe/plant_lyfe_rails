@@ -16,3 +16,9 @@ RSpec.configure do |config|
 
   Kernel.srand config.seed
 end
+
+def AttributesFor(sym)
+  FactoryGirl.build(sym)
+    .attributes
+    .reject { |a| a == 'id' }
+end
