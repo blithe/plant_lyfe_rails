@@ -26,4 +26,27 @@ describe DicotsController do
             expect(plants.last["species"]).to eq(dicot2.species)
         end
     end
+
+    describe "#show" do
+        let!(:dicot) { FactoryGirl.create(:dicot) }
+        before do
+            get :show, id: dicot.id
+        end
+
+        it 'is successful' do
+            expect(response).to be_success
+        end
+
+        it "returns a representation of the dicot" do
+            plant = JSON.parse(response.body)
+
+            expect(plant["id"]).to eq("plant-#{dicot.id}")
+            expect(plant["common_name"]).to eq(dicot.common_name)
+            expect(plant["subclass"]).to eq(dicot.subclass)
+            expect(plant["order"]).to eq(dicot.order)
+            expect(plant["family"]).to eq(dicot.family)
+            expect(plant["genus"]).to eq(dicot.genus)
+            expect(plant["species"]).to eq(dicot.species)
+        end
+    end
 end
