@@ -1,5 +1,15 @@
 class LeafsController < ApplicationController
 
+    def create
+        @dicot = Dicot.friendly.find(params[:dicot_id])
+        @leaf = @dicot.leafs.new(leaf_params)
+        if @leaf.save
+            render json: @leaf, status: 201
+        else
+            render json: {errors: @leaf.errors}, status: :unprocessable_entity
+        end
+    end
+
     def show
         @dicot = Dicot.friendly.find(params[:dicot_id])
         @leaf = @dicot.leafs.find(params[:id])

@@ -1,6 +1,29 @@
 require 'rails_spec_helper'
 
 describe LeafsController do
+    describe "#create" do
+        let!(:dicot) { FactoryGirl.create(:dicot) }
+        let!(:leaf_attributes) { AttributesFor(:leaf) }
+        before do
+            slug = dicot.common_name.downcase.strip.gsub(' ', '-')
+            put :create, leaf_attributes, dicot_id: slug
+        end
+
+        it 'is successful' do
+            expect(response).to have_http_status(:created)
+        end
+
+        it "returns a representation of the leaf" do
+            json = JSON.parse(response.body)
+
+            expect(json["placement"]).to eq(leaf_attributes["placement"])
+            expect(json["blade"]).to eq(leaf_attributes["blade"])
+            expect(json["veins"]).to eq(leaf_attributes["veins"])
+            expect(json["location"]).to eq(leaf_attributes["location"])
+            expect(json["date_found"]).to eq(leaf_attributes["date_found"].strftime("%Y-%m-%d"))
+        end
+    end
+
     describe "#show" do
         let!(:leaf) { FactoryGirl.create(:leaf) }
         before do
