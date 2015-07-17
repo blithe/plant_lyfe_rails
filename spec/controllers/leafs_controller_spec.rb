@@ -24,4 +24,28 @@ describe LeafsController do
             expect(json["date_found"]).to eq(leaf.date_found.strftime("%Y-%m-%d"))
         end
     end
+
+    describe "#update" do
+        let!(:leaf) { FactoryGirl.create(:leaf) }
+        before do
+            slug = leaf.dicot.common_name.downcase.strip.gsub(' ', '-')
+            post :update, dicot_id: slug, id: leaf.id, placement: "new placement"
+        end
+
+        it 'is successful' do
+            expect(response).to be_success
+        end
+
+        it "returns a representation of the leaf" do
+            json = JSON.parse(response.body)
+
+            expect(json["id"]).to eq("leaf-#{leaf.id}")
+            expect(json["plant"]).to eq("plant-#{leaf.dicot.id}")
+            expect(json["placement"]).to eq("new placement")
+            expect(json["blade"]).to eq(leaf.blade)
+            expect(json["veins"]).to eq(leaf.veins)
+            expect(json["location"]).to eq(leaf.location)
+            expect(json["date_found"]).to eq(leaf.date_found.strftime("%Y-%m-%d"))
+        end
+    end
 end
