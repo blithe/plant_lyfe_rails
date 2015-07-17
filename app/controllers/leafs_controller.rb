@@ -1,7 +1,12 @@
 class LeafsController < ApplicationController
 
     def index
-        @leafs = Leaf.all
+        if search_params.present?
+            @search = LeafSearch.new(search_params)
+            @leafs = @search.results
+        else
+            @leafs = Leaf.all
+        end
         render json: @leafs, root: "leaves", each_serializer: ShortLeafSerializer
     end
 
@@ -41,6 +46,10 @@ class LeafsController < ApplicationController
     private
 
     def leaf_params
+        params.permit(:placement, :blade, :veins, :location, :date_found)
+    end
+
+    def search_params
         params.permit(:placement, :blade, :veins, :location, :date_found)
     end
 end

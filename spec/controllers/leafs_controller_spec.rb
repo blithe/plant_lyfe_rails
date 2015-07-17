@@ -27,6 +27,31 @@ describe LeafsController do
         end
     end
 
+   describe "#index with filter" do
+        let!(:leaf1) { FactoryGirl.create(:leaf) }
+        let!(:leaf2) { FactoryGirl.create(:leaf, placement: "near") }
+        before do
+            get :index, placement: "near"
+        end
+
+        it 'is successful' do
+            expect(response).to be_success
+        end
+
+        it 'responds with leaves' do
+            expect(response.body).to include("leaves")
+        end
+
+        it "returns a representation of the leaf" do
+            leaves = JSON.parse(response.body)["leaves"]
+
+            expect(leaves.count).to eq(1)
+
+            expect(leaves.first["id"]).to eq("leaf-#{leaf2.id}")
+            expect(leaves.first["plant"]).to eq("plant-#{leaf2.dicot.id}")
+        end
+    end
+
     describe "#create" do
         let!(:dicot) { FactoryGirl.create(:dicot) }
         let!(:leaf_attributes) { AttributesFor(:leaf) }
