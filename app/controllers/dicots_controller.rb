@@ -18,6 +18,15 @@ class DicotsController < ApplicationController
         end
     end
 
+    def update
+        @dicot = Dicot.friendly.find(params[:id])
+        if @dicot.update(dicot_params)
+            render json: @dicot, serializer: FullDicotSerializer
+        else
+            render json: {errors: @dicot.errors}, status: :unprocessable_entity, serializer: FullDicotSerializer
+        end
+    end
+
     def destroy
         @dicot = Dicot.friendly.find(params[:id])
         @dicot.destroy

@@ -72,6 +72,29 @@ describe DicotsController do
         end
     end
 
+    describe "#update" do
+        let!(:dicot) { FactoryGirl.create(:dicot) }
+        before do
+            slug = dicot.common_name.downcase.strip.gsub(' ', '-')
+            post :update, id: slug, subclass: "new subclass"
+        end
+
+        it 'is successful' do
+            expect(response).to be_success
+        end
+
+        it "returns a representation of the dicot" do
+            plant = JSON.parse(response.body)
+
+            expect(plant["id"]).to eq("plant-#{dicot.id}")
+            expect(plant["common_name"]).to eq(dicot.common_name)
+            expect(plant["subclass"]).to eq("new subclass")
+            expect(plant["order"]).to eq(dicot.order)
+            expect(plant["family"]).to eq(dicot.family)
+            expect(plant["genus"]).to eq(dicot.genus)
+            expect(plant["species"]).to eq(dicot.species)
+        end
+    end
 
     describe "#destroy" do
         let!(:dicot) { FactoryGirl.create(:dicot) }

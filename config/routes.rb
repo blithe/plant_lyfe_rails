@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
 
-	resources :dicots, only: [:index, :show, :create, :destroy], :defaults => { :format => 'json' }
+	resources :dicots, :defaults => { :format => 'json' }
 
 end
