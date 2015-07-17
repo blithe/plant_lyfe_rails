@@ -4,7 +4,8 @@ describe LeafsController do
     describe "#show" do
         let!(:leaf) { FactoryGirl.create(:leaf) }
         before do
-            get :show, dicot_id: leaf.dicot.id, id: leaf.id
+            slug = leaf.dicot.common_name.downcase.strip.gsub(' ', '-')
+            get :show, dicot_id: slug, id: leaf.id
         end
 
         it 'is successful' do
