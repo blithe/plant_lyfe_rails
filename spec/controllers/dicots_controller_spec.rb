@@ -106,6 +106,7 @@ describe DicotsController do
 
     describe "#destroy" do
         let!(:dicot) { FactoryGirl.create(:dicot) }
+        let!(:leaf) { FactoryGirl.create(:leaf, dicot: dicot) }
         before do
             delete :destroy, id: dicot.common_name.downcase.strip.gsub(' ', '-')
         end
@@ -117,6 +118,12 @@ describe DicotsController do
         it 'deletes the dicot' do
             expect {
               Dicot.find(dicot.id)
+            }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+
+        it 'deletes the related leaves' do
+            expect {
+              Leaf.find(leaf.id)
             }.to raise_error(ActiveRecord::RecordNotFound)
         end
     end
