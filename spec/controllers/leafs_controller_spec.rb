@@ -48,4 +48,22 @@ describe LeafsController do
             expect(json["date_found"]).to eq(leaf.date_found.strftime("%Y-%m-%d"))
         end
     end
+
+    describe "#destroy" do
+        let!(:leaf) { FactoryGirl.create(:leaf) }
+        before do
+            slug = leaf.dicot.common_name.downcase.strip.gsub(' ', '-')
+            delete :destroy, dicot_id: slug, id: leaf.id
+        end
+
+        it 'is successful' do
+            expect(response.status).to eq(204)
+        end
+
+        it 'deletes the leaf' do
+            expect {
+              Leaf.find(leaf.id)
+            }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+    end
 end

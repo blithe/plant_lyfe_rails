@@ -16,6 +16,13 @@ class LeafsController < ApplicationController
         end
     end
 
+    def destroy
+        @dicot = Dicot.friendly.find(params[:dicot_id])
+        @leaf = @dicot.leafs.find(params[:id])
+        @leaf.destroy
+        head :no_content
+    end
+
     private
 
     def leaf_params
