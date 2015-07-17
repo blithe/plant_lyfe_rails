@@ -1,5 +1,10 @@
 class LeafsController < ApplicationController
 
+    def index
+        @leafs = Leaf.all
+        render json: @leafs, root: "leaves", each_serializer: ShortLeafSerializer
+    end
+
     def create
         @dicot = Dicot.friendly.find(params[:dicot_id])
         @leaf = @dicot.leafs.new(leaf_params)

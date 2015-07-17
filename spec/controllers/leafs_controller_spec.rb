@@ -1,6 +1,32 @@
 require 'rails_spec_helper'
 
 describe LeafsController do
+    describe "#index" do
+        let!(:leaf1) { FactoryGirl.create(:leaf) }
+        let!(:leaf2) { FactoryGirl.create(:leaf) }
+        before do
+            get :index
+        end
+
+        it 'is successful' do
+            expect(response).to be_success
+        end
+
+        it 'responds with leaves' do
+            expect(response.body).to include("leaves")
+        end
+
+        it "returns a representation of the leaf" do
+            leaves = JSON.parse(response.body)["leaves"]
+
+            expect(leaves.first["id"]).to eq("leaf-#{leaf1.id}")
+            expect(leaves.first["plant"]).to eq("plant-#{leaf1.dicot.id}")
+
+            expect(leaves.last["id"]).to eq("leaf-#{leaf2.id}")
+            expect(leaves.last["plant"]).to eq("plant-#{leaf2.dicot.id}")
+        end
+    end
+
     describe "#create" do
         let!(:dicot) { FactoryGirl.create(:dicot) }
         let!(:leaf_attributes) { AttributesFor(:leaf) }
