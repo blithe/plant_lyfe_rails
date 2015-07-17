@@ -13,6 +13,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'active_model_serializers'
 gem 'friendly_id', '~> 5.1.0'
+gem 'searchlight'
 
 
 group :development, :test do
