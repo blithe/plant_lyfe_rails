@@ -5,7 +5,7 @@ class DicotsController < ApplicationController
     end
 
     def show
-        @dicot = Dicot.find(params[:id])
+        @dicot = Dicot.friendly.find(params[:id])
         render json: @dicot, serializer: FullDicotSerializer
     end
 end

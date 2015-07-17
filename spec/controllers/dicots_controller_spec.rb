@@ -30,7 +30,7 @@ describe DicotsController do
     describe "#show" do
         let!(:dicot) { FactoryGirl.create(:dicot) }
         before do
-            get :show, id: dicot.id
+            get :show, id: dicot.common_name.downcase.strip.gsub(' ', '-')
         end
 
         it 'is successful' do
