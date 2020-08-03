@@ -16,7 +16,7 @@ gem 'friendly_id', '~> 5.1.0'
 gem 'searchlight'
 gem 'execjs'
 gem 'therubyracer'
-gem 'rake', '< 11.0'
+gem 'rake', '< 13.0'
 
 
 group :development, :test do
